@@ -48,7 +48,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         boolean overlap = appointmentRepository.existsOverlappingBookedAppointment(
                 doctor.getId(), start, end, null
-        );
+        ) == 1;
         if (overlap) {
             throw new ConflictException("Appointment overlaps with an existing booking for this doctor");
         }
@@ -91,7 +91,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         boolean overlap = appointmentRepository.existsOverlappingBookedAppointment(
                 appt.getDoctor().getId(), newStart, newEnd, appointmentId
-        );
+        ) == 1;
 
        
         if (overlap) {

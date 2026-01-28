@@ -68,7 +68,7 @@ class AppointmentServiceTest {
 
         when(appointmentRepository.existsOverlappingBookedAppointment(
                 eq(1L), any(LocalDateTime.class), any(LocalDateTime.class), isNull()
-        )).thenReturn(true);
+        )).thenReturn(1L);
 
         assertThrows(ConflictException.class, () -> service.book(req));
         verify(appointmentRepository, never()).save(any());
@@ -87,7 +87,7 @@ class AppointmentServiceTest {
 
         when(appointmentRepository.existsOverlappingBookedAppointment(
                 eq(1L), any(LocalDateTime.class), any(LocalDateTime.class), isNull()
-        )).thenReturn(false);
+        )).thenReturn(0L);
 
         Appointment saved = Appointment.builder()
                 .id(10L)
@@ -134,7 +134,7 @@ class AppointmentServiceTest {
 
         when(appointmentRepository.existsOverlappingBookedAppointment(
                 eq(1L), any(LocalDateTime.class), any(LocalDateTime.class), eq(50L)
-        )).thenReturn(true);
+        )).thenReturn(1L);
 
         var req = new RescheduleRequest(LocalDateTime.now().plusDays(2), 30);
 

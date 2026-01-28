@@ -26,7 +26,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
         AND DATE_ADD(a.start_time, INTERVAL a.duration_minutes MINUTE) > :newStart
     )
 """, nativeQuery = true)
-boolean existsOverlappingBookedAppointment(
+Long existsOverlappingBookedAppointment(
         @Param("doctorId") Long doctorId,
         @Param("newStart") LocalDateTime newStart,
         @Param("newEnd") LocalDateTime newEnd,
