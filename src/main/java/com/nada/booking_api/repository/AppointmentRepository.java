@@ -16,18 +16,20 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             LocalDateTime end
     );
 
-    @Query(value = """
+   @Query(value = """
     SELECT EXISTS(
       SELECT 1 FROM appointments a
       WHERE a.doctor_id = :doctorId
         AND a.status = 'BOOKED'
+        AND (:excludeId IS NULL OR a.id <> :excludeId)
         AND a.start_time < :newEnd
         AND DATE_ADD(a.start_time, INTERVAL a.duration_minutes MINUTE) > :newStart
     )
 """, nativeQuery = true)
-    boolean existsOverlappingBookedAppointment(
-            @Param("doctorId") Long doctorId,
-            @Param("newStart") LocalDateTime newStart,
-            @Param("newEnd") LocalDateTime newEnd
-    );
+boolean existsOverlappingBookedAppointment(
+        @Param("doctorId") Long doctorId,
+        @Param("newStart") LocalDateTime newStart,
+        @Param("newEnd") LocalDateTime newEnd,
+        @Param("excludeId") Long excludeId
+);
 }

@@ -47,7 +47,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         LocalDateTime end = start.plusMinutes(req.durationMinutes());
 
         boolean overlap = appointmentRepository.existsOverlappingBookedAppointment(
-                doctor.getId(), start, end
+                doctor.getId(), start, end, null
         );
         if (overlap) {
             throw new ConflictException("Appointment overlaps with an existing booking for this doctor");
@@ -90,7 +90,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         LocalDateTime newEnd = newStart.plusMinutes(req.newDurationMinutes());
 
         boolean overlap = appointmentRepository.existsOverlappingBookedAppointment(
-                appt.getDoctor().getId(), newStart, newEnd
+                appt.getDoctor().getId(), newStart, newEnd, appointmentId
         );
 
        
